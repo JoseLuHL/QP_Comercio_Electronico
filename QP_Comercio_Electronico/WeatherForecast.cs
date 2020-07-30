@@ -13,3 +13,17 @@ namespace QP_Comercio_Electronico
         public string Summary { get; set; }
     }
 }
+
+//private ICollection<Ordene> ordenes { get; set; }
+//public virtual ICollection<Ordene> Ordenes
+//{
+//    get { return null; }
+//    set { ordenes = value; }
+//}
+
+//private ICollection<Ordendetalle> ordendetalles { get; set; }
+//public virtual ICollection<Ordendetalle> Ordendetalles
+//{
+//    get { return null; }
+//    set { ordendetalles = value; }
+//}

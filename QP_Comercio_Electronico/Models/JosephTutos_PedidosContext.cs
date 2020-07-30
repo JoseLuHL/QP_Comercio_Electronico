@@ -9,6 +9,7 @@ namespace QP_Comercio_Electronico.Models
     public partial class JosephTutos_PedidosContext : DbContext
     {
 
+
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
         {
@@ -19,9 +20,8 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Mediopago> Mediopagos { get; set; }
         public virtual DbSet<Ordendetalle> Ordendetalles { get; set; }
         public virtual DbSet<Ordene> Ordenes { get; set; }
+        public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -119,9 +119,13 @@ namespace QP_Comercio_Electronico.Models
 
             modelBuilder.Entity<Ordendetalle>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(x => x.DetordId);
 
                 entity.ToTable("ordendetalle");
+
+                entity.Property(e => e.DetordId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("detord_id");
 
                 entity.Property(e => e.DetordCantidad)
                     .HasMaxLength(50)
@@ -139,15 +143,9 @@ namespace QP_Comercio_Electronico.Models
                     .HasMaxLength(50)
                     .HasColumnName("detord_fechaenvio");
 
-                entity.Property(e => e.DetordId).HasColumnName("detord_id");
+                entity.Property(e => e.DetordIdproducto).HasColumnName("detord_idproducto");
 
-                entity.Property(e => e.DetordIdproducto)
-                    .HasMaxLength(50)
-                    .HasColumnName("detord_idproducto");
-
-                entity.Property(e => e.DetordOrdennumero)
-                    .HasMaxLength(50)
-                    .HasColumnName("detord_ordennumero");
+                entity.Property(e => e.DetordOrdennumero).HasColumnName("detord_ordennumero");
 
                 entity.Property(e => e.DetordPrecio)
                     .HasMaxLength(50)
@@ -160,6 +158,16 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.DetordTotal)
                     .HasMaxLength(50)
                     .HasColumnName("detord_total");
+
+                entity.HasOne(d => d.DetordIdproductoNavigation)
+                    .WithMany(p => p.Ordendetalles)
+                    .HasForeignKey(x => x.DetordIdproducto)
+                    .HasConstraintName("FK_ordendetalle_producto");
+
+                entity.HasOne(d => d.DetordOrdennumeroNavigation)
+                    .WithMany(p => p.Ordendetalles)
+                    .HasForeignKey(x => x.DetordOrdennumero)
+                    .HasConstraintName("FK_ordendetalle_ordenes");
             });
 
             modelBuilder.Entity<Ordene>(entity =>
@@ -168,13 +176,15 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.ToTable("ordenes");
 
-                entity.Property(e => e.OrdId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ord_id");
+                entity.Property(e => e.OrdId).HasColumnName("ord_id");
 
                 entity.Property(e => e.OrdAltura)
                     .HasMaxLength(50)
                     .HasColumnName("ord_altura");
+
+                entity.Property(e => e.OrdDescripcion)
+                    .HasMaxLength(50)
+                    .HasColumnName("ord_descripcion");
 
                 entity.Property(e => e.OrdDireccion)
                     .HasMaxLength(50)
@@ -188,9 +198,11 @@ namespace QP_Comercio_Electronico.Models
                     .HasMaxLength(50)
                     .HasColumnName("ord_fechaenvio");
 
-                entity.Property(e => e.OrdIdcliente)
-                    .HasMaxLength(50)
-                    .HasColumnName("ord_idcliente");
+                entity.Property(e => e.OrdIdcliente).HasColumnName("ord_idcliente");
+
+                entity.Property(e => e.OrdIdestado).HasColumnName("ord_idestado");
+
+                entity.Property(e => e.OrdIdtienda).HasColumnName("ord_idtienda");
 
                 entity.Property(e => e.OrdLatitud)
                     .HasMaxLength(50)
@@ -203,6 +215,67 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.OrdNumero)
                     .HasMaxLength(50)
                     .HasColumnName("ord_numero");
+
+                entity.Property(e => e.OrdTotalcompra).HasColumnName("ord_totalcompra");
+
+                entity.HasOne(d => d.OrdIdclienteNavigation)
+                    .WithMany(p => p.Ordenes)
+                    .HasForeignKey(x => x.OrdIdcliente)
+                    .HasConstraintName("FK_ordenes_cliente");
+
+                entity.HasOne(d => d.OrdIdtiendaNavigation)
+                    .WithMany(p => p.Ordenes)
+                    .HasForeignKey(x => x.OrdIdtienda)
+                    .HasConstraintName("FK_ordenes_tienda");
+            });
+
+            modelBuilder.Entity<Producto>(entity =>
+            {
+                entity.HasKey(x => x.ProdId);
+
+                entity.ToTable("producto");
+
+                entity.Property(e => e.ProdId).HasColumnName("prod_id");
+
+                entity.Property(e => e.ProdCategoria)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_categoria");
+
+                entity.Property(e => e.ProdCodigo)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_codigo");
+
+                entity.Property(e => e.ProdColor)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_color");
+
+                entity.Property(e => e.ProdDescripcion)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_descripcion");
+
+                entity.Property(e => e.ProdFecha)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_fecha");
+
+                entity.Property(e => e.ProdFoto)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_foto");
+
+                entity.Property(e => e.ProdNombre)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_nombre");
+
+                entity.Property(e => e.ProdPreciounitario).HasColumnName("prod_preciounitario");
+
+                entity.Property(e => e.ProdRanking)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_ranking");
+
+                entity.Property(e => e.ProdStockmin).HasColumnName("prod_stockmin");
+
+                entity.Property(e => e.ProdStok).HasColumnName("prod_stok");
+
+                entity.Property(e => e.ProdStokmax).HasColumnName("prod_stokmax");
             });
 
             modelBuilder.Entity<Tiendum>(entity =>
@@ -220,6 +293,10 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.TienBarrio)
                     .HasMaxLength(50)
                     .HasColumnName("tien_barrio");
+
+                entity.Property(e => e.TienClave)
+                    .HasMaxLength(50)
+                    .HasColumnName("tien_clave");
 
                 entity.Property(e => e.TienCorreo)
                     .HasMaxLength(50)

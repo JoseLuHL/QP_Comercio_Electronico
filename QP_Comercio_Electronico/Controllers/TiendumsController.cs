@@ -24,7 +24,8 @@ namespace QP_Comercio_Electronico.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tiendum>>> GetTienda()
         {
-            return await _context.Tienda.ToListAsync();
+            return await _context.Tienda
+                .Include(s => s.Ordenes).ToListAsync();
         }
 
         // GET: api/Tiendums/5
@@ -32,6 +33,19 @@ namespace QP_Comercio_Electronico.Controllers
         public async Task<ActionResult<Tiendum>> GetTiendum(int id)
         {
             var tiendum = await _context.Tienda.FindAsync(id);
+
+            if (tiendum == null)
+            {
+                return NotFound();
+            }
+
+            return tiendum;
+        }
+
+        [HttpGet("{usuario}/{contrasena}")]
+        public async Task<ActionResult<Tiendum>> GetTiendum(string usuario , string contrasena)
+        {
+            var tiendum = await _context.Tienda.FirstOrDefaultAsync(s=>s.TienNit==usuario && s.TienClave==contrasena);
 
             if (tiendum == null)
             {

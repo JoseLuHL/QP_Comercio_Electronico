@@ -7,6 +7,11 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class Cliente
     {
+        public Cliente()
+        {
+            Ordenes = new HashSet<Ordene>();
+        }
+
         public int ClieId { get; set; }
         public string ClieIdtipoidentificacion { get; set; }
         public string ClieIdentificacion { get; set; }
@@ -19,5 +24,12 @@ namespace QP_Comercio_Electronico.Models
         public string ClieLongitud { get; set; }
         public string ClieLatitud { get; set; }
         public string ClieAltura { get; set; }
+        private ICollection<Ordene> ordenes { get; set; }
+        public virtual ICollection<Ordene> Ordenes
+        {
+            get { return null; }
+            set { ordenes = value; }
+        }
+        //public virtual ICollection<Ordene> Ordenes { get; set; }
     }
 }

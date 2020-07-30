@@ -24,14 +24,44 @@ namespace QP_Comercio_Electronico.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ordene>>> GetOrdenes()
         {
-            return await _context.Ordenes.ToListAsync();
+            var datos = await _context.Ordenes
+                .Include(s => s.Ordendetalles)
+                .ThenInclude(s=>s.DetordIdproductoNavigation)
+                .Include(s => s.OrdIdclienteNavigation)
+                .Where(s=>s.Ordendetalles!=null)
+                .ToListAsync();
+            //var datos = await _context.Clientes.Include(s => s.Ordenes).ThenInclude(s => s.Ordendetalles).ToListAsync();
+            return Ok(datos);
         }
 
         // GET: api/Ordenes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Ordene>> GetOrdene(int id)
         {
-            var ordene = await _context.Ordenes.FindAsync(id);
+            //var ordene = await _context.Ordenes.FindAsync(id);
+            var ordene = await _context.Ordenes
+                .Include(s => s.Ordendetalles)
+                .ThenInclude(s => s.DetordIdproductoNavigation)
+                .Include(s=> s.OrdIdclienteNavigation)
+                .FirstOrDefaultAsync(s => s.Ordendetalles != null);
+
+            if (ordene == null)
+            {
+                return NotFound();
+            }
+
+            return ordene;
+        }
+        [HttpGet("tienda/{idtienda}")]
+        public async Task<ActionResult<IEnumerable<Ordene>>> GetOrdenTienda(int? idtienda)
+        {
+            //var ordene = await _context.Ordenes.FindAsync(id);
+            var ordene = await _context.Ordenes
+                .Include(s => s.Ordendetalles)
+                .ThenInclude(s => s.DetordIdproductoNavigation)
+                .Include(s => s.OrdIdclienteNavigation)
+                .Where(s => s.Ordendetalles != null && s.OrdIdcliente==idtienda)
+                .ToListAsync();
 
             if (ordene == null)
             {

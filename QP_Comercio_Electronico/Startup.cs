@@ -34,7 +34,7 @@ namespace QP_Comercio_Electronico
         {
             services.AddControllers();
             services.AddCors();
-
+            services.AddResponseCompression();
             services.AddDbContext<Models.JosephTutos_PedidosContext>(options =>
           options.UseSqlServer(Configuration.GetConnectionString("ChatAngularContext")));
 
@@ -64,11 +64,7 @@ namespace QP_Comercio_Electronico
                     new AspNetCoreOperationSecurityScopeProcessor("JWT"));
             });
 
-
-
-          
-
-
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +86,7 @@ namespace QP_Comercio_Electronico
 
             app.UseResponseCompression();
 
-
+            app.UseResponseCompression();
             // AÑADIMOS EL MIDDLEWARE DE AUTENTICACIÓN
             // DE USUARIOS AL PIPELINE DE ASP.NET CORE
             app.UseAuthentication();
