@@ -27,8 +27,11 @@ namespace QP_Comercio_Electronico.Controllers
             var datos = await _context.Ordenes
                 .Include(s => s.Ordendetalles)
                 .ThenInclude(s=>s.DetordIdproductoNavigation)
+                .Include(s=>s.OrdIdformapagoNavigation)
+                .Include(s=>s.OrdIdestadoNavigation)
                 .Include(s => s.OrdIdclienteNavigation)
                 .Where(s=>s.Ordendetalles!=null)
+                .OrderByDescending(s => s.OrdId)
                 .ToListAsync();
             //var datos = await _context.Clientes.Include(s => s.Ordenes).ThenInclude(s => s.Ordendetalles).ToListAsync();
             return Ok(datos);
@@ -43,6 +46,8 @@ namespace QP_Comercio_Electronico.Controllers
                 .Include(s => s.Ordendetalles)
                 .ThenInclude(s => s.DetordIdproductoNavigation)
                 .Include(s=> s.OrdIdclienteNavigation)
+                .Include(s => s.OrdIdformapagoNavigation)
+                .Include(s => s.OrdIdestadoNavigation)
                 .FirstOrDefaultAsync(s => s.Ordendetalles != null);
 
             if (ordene == null)
@@ -60,7 +65,10 @@ namespace QP_Comercio_Electronico.Controllers
                 .Include(s => s.Ordendetalles)
                 .ThenInclude(s => s.DetordIdproductoNavigation)
                 .Include(s => s.OrdIdclienteNavigation)
+                .Include(s => s.OrdIdformapagoNavigation)
+                .Include(s => s.OrdIdestadoNavigation)
                 .Where(s => s.Ordendetalles != null && s.OrdIdcliente==idtienda)
+                .OrderByDescending(s=>s.OrdId)
                 .ToListAsync();
 
             if (ordene == null)

@@ -8,7 +8,9 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class JosephTutos_PedidosContext : DbContext
     {
-
+        public JosephTutos_PedidosContext()
+        {
+        }
 
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
@@ -17,11 +19,21 @@ namespace QP_Comercio_Electronico.Models
 
         public virtual DbSet<Categorium> Categoria { get; set; }
         public virtual DbSet<Cliente> Clientes { get; set; }
+        public virtual DbSet<Estadoorden> Estadoordens { get; set; }
         public virtual DbSet<Mediopago> Mediopagos { get; set; }
         public virtual DbSet<Ordendetalle> Ordendetalles { get; set; }
         public virtual DbSet<Ordene> Ordenes { get; set; }
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=192.168.1.10;Database=JosephTutos_Pedidos;User ID=jose;Password=2020");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -102,15 +114,26 @@ namespace QP_Comercio_Electronico.Models
                     .HasColumnName("clie_telefono");
             });
 
+            modelBuilder.Entity<Estadoorden>(entity =>
+            {
+                entity.HasKey(x => x.EsorId);
+
+                entity.ToTable("estadoorden");
+
+                entity.Property(e => e.EsorId).HasColumnName("esor_id");
+
+                entity.Property(e => e.EsorIdDescripcion)
+                    .HasMaxLength(50)
+                    .HasColumnName("esor_id_descripcion");
+            });
+
             modelBuilder.Entity<Mediopago>(entity =>
             {
                 entity.HasKey(x => x.MepId);
 
                 entity.ToTable("mediopago");
 
-                entity.Property(e => e.MepId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("Mep_id");
+                entity.Property(e => e.MepId).HasColumnName("Mep_id");
 
                 entity.Property(e => e.MepDescripcion)
                     .HasMaxLength(50)
@@ -202,6 +225,8 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.Property(e => e.OrdIdestado).HasColumnName("ord_idestado");
 
+                entity.Property(e => e.OrdIdformapago).HasColumnName("ord_idformapago");
+
                 entity.Property(e => e.OrdIdtienda).HasColumnName("ord_idtienda");
 
                 entity.Property(e => e.OrdLatitud)
@@ -222,6 +247,16 @@ namespace QP_Comercio_Electronico.Models
                     .WithMany(p => p.Ordenes)
                     .HasForeignKey(x => x.OrdIdcliente)
                     .HasConstraintName("FK_ordenes_cliente");
+
+                entity.HasOne(d => d.OrdIdestadoNavigation)
+                    .WithMany(p => p.Ordenes)
+                    .HasForeignKey(x => x.OrdIdestado)
+                    .HasConstraintName("FK_ordenes_estadoorden");
+
+                entity.HasOne(d => d.OrdIdformapagoNavigation)
+                    .WithMany(p => p.Ordenes)
+                    .HasForeignKey(x => x.OrdIdformapago)
+                    .HasConstraintName("FK_ordenes_mediopago");
 
                 entity.HasOne(d => d.OrdIdtiendaNavigation)
                     .WithMany(p => p.Ordenes)

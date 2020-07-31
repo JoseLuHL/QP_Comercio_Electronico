@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace QP_Comercio_Electronico.Models
 {
-    public partial class Mediopago
+    public partial class Estadoorden
     {
-        public int MepId { get; set; }
-        public string MepDescripcion { get; set; }
+        public int EsorId { get; set; }
+        public string EsorIdDescripcion { get; set; }
 
         //public virtual ICollection<Ordene> Ordenes { get; set; }
         private ICollection<Ordene> ordenes { get; set; }

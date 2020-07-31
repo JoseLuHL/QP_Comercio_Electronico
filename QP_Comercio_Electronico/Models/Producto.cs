@@ -7,6 +7,10 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class Producto
     {
+        public Producto()
+        {
+            Ordendetalles = new HashSet<Ordendetalle>();
+        }
 
         public int ProdId { get; set; }
         public string ProdCodigo { get; set; }
@@ -21,11 +25,7 @@ namespace QP_Comercio_Electronico.Models
         public int? ProdStok { get; set; }
         public int? ProdStokmax { get; set; }
         public string ProdFecha { get; set; }
-        private ICollection<Ordendetalle> ordendetalles { get; set; }
-        public virtual ICollection<Ordendetalle> Ordendetalles 
-        {
-            get { return null; }
-            set { ordendetalles = value; }
-        }
+
+        public virtual ICollection<Ordendetalle> Ordendetalles { get; set; }
     }
 }

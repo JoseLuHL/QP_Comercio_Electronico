@@ -30,6 +30,6 @@ namespace QP_Comercio_Electronico.Models
             get { return null; }
             set { ordenes = value; }
         }
-        //public virtual ICollection<Ordene> Ordenes { get; set; }
+
     }
 }
