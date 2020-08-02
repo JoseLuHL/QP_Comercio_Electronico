@@ -15,7 +15,6 @@ namespace QP_Comercio_Electronico.Models
         public int EsorId { get; set; }
         public string EsorIdDescripcion { get; set; }
 
-        //public virtual ICollection<Ordene> Ordenes { get; set; }
         private ICollection<Ordene> ordenes { get; set; }
         public virtual ICollection<Ordene> Ordenes
         {

@@ -25,6 +25,8 @@ namespace QP_Comercio_Electronico.Controllers
         public async Task<ActionResult<IEnumerable<Tiendum>>> GetTienda()
         {
             return await _context.Tienda
+                .Include(s => s.Detalletiendacategoria)
+                .ThenInclude(s => s.CanttienIdcategoriaNavigation)
                 .Include(s => s.Ordenes).ToListAsync();
         }
 
@@ -32,7 +34,10 @@ namespace QP_Comercio_Electronico.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Tiendum>> GetTiendum(int id)
         {
-            var tiendum = await _context.Tienda.FindAsync(id);
+            var tiendum = await _context.Tienda
+                                .Include(s => s.Detalletiendacategoria)
+                .ThenInclude(s => s.CanttienIdcategoriaNavigation)
+                .FirstOrDefaultAsync(s =>s.TienId==id);
 
             if (tiendum == null)
             {
@@ -43,9 +48,12 @@ namespace QP_Comercio_Electronico.Controllers
         }
 
         [HttpGet("{usuario}/{contrasena}")]
-        public async Task<ActionResult<Tiendum>> GetTiendum(string usuario , string contrasena)
+        public async Task<ActionResult<Tiendum>> GetTiendum(string usuario, string contrasena)
         {
-            var tiendum = await _context.Tienda.FirstOrDefaultAsync(s=>s.TienNit==usuario && s.TienClave==contrasena);
+            var tiendum = await _context.Tienda
+                                .Include(s => s.Detalletiendacategoria)
+                .ThenInclude(s => s.CanttienIdcategoriaNavigation)
+                .FirstOrDefaultAsync(s => s.TienNit == usuario && s.TienClave == contrasena);
 
             if (tiendum == null)
             {

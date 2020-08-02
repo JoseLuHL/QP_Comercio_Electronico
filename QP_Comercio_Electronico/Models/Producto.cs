@@ -34,12 +34,6 @@ namespace QP_Comercio_Electronico.Models
 
         public virtual Categorium ProdIdcategoriaNavigation { get; set; }
         public virtual Tiendum ProdIdtiendaNavigation { get; set; }
-        //public virtual ICollection<Ordendetalle> Ordendetalles { get; set; }
-        private ICollection<Ordendetalle> ordendetalles { get; set; }
-        public virtual ICollection<Ordendetalle> Ordendetalles
-        {
-            get { return null; }
-            set { ordendetalles = value; }
-        }
+        public virtual ICollection<Ordendetalle> Ordendetalles { get; set; }
     }
 }

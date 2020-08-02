@@ -17,12 +17,14 @@ namespace QP_Comercio_Electronico.Models
 
         public virtual DbSet<Categorium> Categoria { get; set; }
         public virtual DbSet<Cliente> Clientes { get; set; }
+        public virtual DbSet<Detalletiendacategorium> Detalletiendacategoria { get; set; }
         public virtual DbSet<Estadoorden> Estadoordens { get; set; }
         public virtual DbSet<Mediopago> Mediopagos { get; set; }
         public virtual DbSet<Ordendetalle> Ordendetalles { get; set; }
         public virtual DbSet<Ordene> Ordenes { get; set; }
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,9 +37,10 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.CantId).HasColumnName("cant_id");
 
                 entity.Property(e => e.CatDescripcion)
-                    .HasMaxLength(10)
-                    .HasColumnName("cat_descripcion")
-                    .IsFixedLength(true);
+                    .HasMaxLength(50)
+                    .HasColumnName("cat_descripcion");
+
+                entity.Property(e => e.CatFoto).HasColumnName("cat_foto");
 
                 entity.Property(e => e.CatIdestado)
                     .HasMaxLength(10)
@@ -98,6 +101,29 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.ClieTelefono)
                     .HasMaxLength(50)
                     .HasColumnName("clie_telefono");
+            });
+
+            modelBuilder.Entity<Detalletiendacategorium>(entity =>
+            {
+                entity.HasKey(x => new { x.CanttienIdtienda, x.CanttienIdcategoria });
+
+                entity.ToTable("detalletiendacategoria");
+
+                entity.Property(e => e.CanttienIdtienda).HasColumnName("canttien_idtienda");
+
+                entity.Property(e => e.CanttienIdcategoria).HasColumnName("canttien_idcategoria");
+
+                entity.HasOne(d => d.CanttienIdcategoriaNavigation)
+                    .WithMany(p => p.Detalletiendacategoria)
+                    .HasForeignKey(x => x.CanttienIdcategoria)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_detalletiendacategoria_categoria");
+
+                entity.HasOne(d => d.CanttienIdtiendaNavigation)
+                    .WithMany(p => p.Detalletiendacategoria)
+                    .HasForeignKey(x => x.CanttienIdtienda)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_detalletiendacategoria_tienda");
             });
 
             modelBuilder.Entity<Estadoorden>(entity =>
@@ -347,6 +373,16 @@ namespace QP_Comercio_Electronico.Models
                     .HasMaxLength(50)
                     .HasColumnName("tien_direccion");
 
+                entity.Property(e => e.TienFacebook)
+                    .HasMaxLength(100)
+                    .HasColumnName("tien_facebook");
+
+                entity.Property(e => e.TienFoto).HasColumnName("tien_foto");
+
+                entity.Property(e => e.TienInstagram)
+                    .HasMaxLength(100)
+                    .HasColumnName("tien_instagram");
+
                 entity.Property(e => e.TienLatitud)
                     .HasMaxLength(50)
                     .HasColumnName("tien_latitud");
@@ -370,6 +406,10 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.TienTipoidentificacion)
                     .HasMaxLength(50)
                     .HasColumnName("tien_tipoidentificacion");
+
+                entity.Property(e => e.TienYoutube)
+                    .HasMaxLength(100)
+                    .HasColumnName("tien_youtube");
             });
 
             OnModelCreatingPartial(modelBuilder);
