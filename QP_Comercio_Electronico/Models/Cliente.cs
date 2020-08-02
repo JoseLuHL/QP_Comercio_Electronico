@@ -24,12 +24,13 @@ namespace QP_Comercio_Electronico.Models
         public string ClieLongitud { get; set; }
         public string ClieLatitud { get; set; }
         public string ClieAltura { get; set; }
+
+        //public virtual ICollection<Ordene> Ordenes { get; set; }
         private ICollection<Ordene> ordenes { get; set; }
         public virtual ICollection<Ordene> Ordenes
         {
             get { return null; }
             set { ordenes = value; }
         }
-
     }
 }

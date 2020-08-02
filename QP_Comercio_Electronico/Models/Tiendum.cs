@@ -10,6 +10,7 @@ namespace QP_Comercio_Electronico.Models
         public Tiendum()
         {
             Ordenes = new HashSet<Ordene>();
+            Productos = new HashSet<Producto>();
         }
 
         public int TienId { get; set; }
@@ -25,6 +26,13 @@ namespace QP_Comercio_Electronico.Models
         public string TienLongitud { get; set; }
         public string TienAltura { get; set; }
 
-        public virtual ICollection<Ordene> Ordenes { get; set; }
+        private ICollection<Ordene> ordenes { get; set; }
+        public virtual ICollection<Ordene> Ordenes
+        {
+            get { return null; }
+            set { ordenes = value; }
+        }
+        //public virtual ICollection<Ordene> Ordenes { get; set; }
+        public virtual ICollection<Producto> Productos { get; set; }
     }
 }

@@ -7,6 +7,11 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class Mediopago
     {
+        public Mediopago()
+        {
+            Ordenes = new HashSet<Ordene>();
+        }
+
         public int MepId { get; set; }
         public string MepDescripcion { get; set; }
 

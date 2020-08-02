@@ -8,9 +8,7 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class JosephTutos_PedidosContext : DbContext
     {
-        public JosephTutos_PedidosContext()
-        {
-        }
+
 
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
@@ -26,27 +24,15 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=192.168.1.10;Database=JosephTutos_Pedidos;User ID=jose;Password=2020");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Categorium>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(x => x.CantId);
 
                 entity.ToTable("categoria");
 
-                entity.Property(e => e.CantId)
-                    .HasMaxLength(10)
-                    .HasColumnName("cant_id")
-                    .IsFixedLength(true);
+                entity.Property(e => e.CantId).HasColumnName("cant_id");
 
                 entity.Property(e => e.CatDescripcion)
                     .HasMaxLength(10)
@@ -272,9 +258,7 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.Property(e => e.ProdId).HasColumnName("prod_id");
 
-                entity.Property(e => e.ProdCategoria)
-                    .HasMaxLength(50)
-                    .HasColumnName("prod_categoria");
+                entity.Property(e => e.ProdCalificacion).HasColumnName("prod_calificacion");
 
                 entity.Property(e => e.ProdCodigo)
                     .HasMaxLength(50)
@@ -284,21 +268,33 @@ namespace QP_Comercio_Electronico.Models
                     .HasMaxLength(50)
                     .HasColumnName("prod_color");
 
+                entity.Property(e => e.ProdCountventas)
+                    .HasMaxLength(50)
+                    .HasColumnName("prod_countventas");
+
                 entity.Property(e => e.ProdDescripcion)
                     .HasMaxLength(50)
                     .HasColumnName("prod_descripcion");
+
+                entity.Property(e => e.ProdDescuento).HasColumnName("prod_descuento");
+
+                entity.Property(e => e.ProdFavorito).HasColumnName("prod_favorito");
 
                 entity.Property(e => e.ProdFecha)
                     .HasMaxLength(50)
                     .HasColumnName("prod_fecha");
 
-                entity.Property(e => e.ProdFoto)
-                    .HasMaxLength(50)
-                    .HasColumnName("prod_foto");
+                entity.Property(e => e.ProdFoto).HasColumnName("prod_foto");
+
+                entity.Property(e => e.ProdIdcategoria).HasColumnName("prod_idcategoria");
+
+                entity.Property(e => e.ProdIdtienda).HasColumnName("prod_idtienda");
 
                 entity.Property(e => e.ProdNombre)
                     .HasMaxLength(50)
                     .HasColumnName("prod_nombre");
+
+                entity.Property(e => e.ProdPrecioanterior).HasColumnName("prod_precioanterior");
 
                 entity.Property(e => e.ProdPreciounitario).HasColumnName("prod_preciounitario");
 
@@ -311,6 +307,16 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.ProdStok).HasColumnName("prod_stok");
 
                 entity.Property(e => e.ProdStokmax).HasColumnName("prod_stokmax");
+
+                entity.HasOne(d => d.ProdIdcategoriaNavigation)
+                    .WithMany(p => p.Productos)
+                    .HasForeignKey(x => x.ProdIdcategoria)
+                    .HasConstraintName("FK_producto_categoria");
+
+                entity.HasOne(d => d.ProdIdtiendaNavigation)
+                    .WithMany(p => p.Productos)
+                    .HasForeignKey(x => x.ProdIdtienda)
+                    .HasConstraintName("FK_producto_tienda");
             });
 
             modelBuilder.Entity<Tiendum>(entity =>
