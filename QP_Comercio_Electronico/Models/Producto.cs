@@ -32,7 +32,7 @@ namespace QP_Comercio_Electronico.Models
         public double? ProdDescuento { get; set; }
         public int? ProdIdtienda { get; set; }
 
-        public virtual Categorium ProdIdcategoriaNavigation { get; set; }
+        public virtual Subcategorium ProdIdcategoriaNavigation { get; set; }
         public virtual Tiendum ProdIdtiendaNavigation { get; set; }
         public virtual ICollection<Ordendetalle> Ordendetalles { get; set; }
     }

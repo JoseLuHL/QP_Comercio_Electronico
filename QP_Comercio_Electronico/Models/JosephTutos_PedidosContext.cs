@@ -9,7 +9,6 @@ namespace QP_Comercio_Electronico.Models
     public partial class JosephTutos_PedidosContext : DbContext
     {
 
-
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
         {
@@ -23,8 +22,8 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Ordendetalle> Ordendetalles { get; set; }
         public virtual DbSet<Ordene> Ordenes { get; set; }
         public virtual DbSet<Producto> Productos { get; set; }
+        public virtual DbSet<Subcategorium> Subcategoria { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -337,12 +336,36 @@ namespace QP_Comercio_Electronico.Models
                 entity.HasOne(d => d.ProdIdcategoriaNavigation)
                     .WithMany(p => p.Productos)
                     .HasForeignKey(x => x.ProdIdcategoria)
-                    .HasConstraintName("FK_producto_categoria");
+                    .HasConstraintName("FK_producto_subcategoria");
 
                 entity.HasOne(d => d.ProdIdtiendaNavigation)
                     .WithMany(p => p.Productos)
                     .HasForeignKey(x => x.ProdIdtienda)
                     .HasConstraintName("FK_producto_tienda");
+            });
+
+            modelBuilder.Entity<Subcategorium>(entity =>
+            {
+                entity.HasKey(x => x.SubcatId);
+
+                entity.ToTable("subcategoria");
+
+                entity.Property(e => e.SubcatId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("subcat_id");
+
+                entity.Property(e => e.SubcatDescripcion)
+                    .HasMaxLength(50)
+                    .HasColumnName("subcat_descripcion");
+
+                entity.Property(e => e.SubcatFoto).HasColumnName("subcat_foto");
+
+                entity.Property(e => e.SubcatIdcategoria).HasColumnName("subcat_idcategoria");
+
+                entity.HasOne(d => d.SubcatIdcategoriaNavigation)
+                    .WithMany(p => p.Subcategoria)
+                    .HasForeignKey(x => x.SubcatIdcategoria)
+                    .HasConstraintName("FK_subcategoria_categoria");
             });
 
             modelBuilder.Entity<Tiendum>(entity =>
@@ -394,6 +417,8 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.TienNit)
                     .HasMaxLength(50)
                     .HasColumnName("tien_nit");
+
+                entity.Property(e => e.TienPremium).HasColumnName("tien_premium");
 
                 entity.Property(e => e.TienRazonsocial)
                     .HasMaxLength(200)

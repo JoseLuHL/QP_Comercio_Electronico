@@ -30,14 +30,10 @@ namespace QP_Comercio_Electronico.Models
         public string TienInstagram { get; set; }
         public string TienYoutube { get; set; }
         public string TienFoto { get; set; }
+        public bool? TienPremium { get; set; }
 
         public virtual ICollection<Detalletiendacategorium> Detalletiendacategoria { get; set; }
-        private ICollection<Ordene> ordenes { get; set; }
-        public virtual ICollection<Ordene> Ordenes
-        {
-            get { return null; }
-            set { ordenes = value; }
-        }
+        public virtual ICollection<Ordene> Ordenes { get; set; }
         public virtual ICollection<Producto> Productos { get; set; }
     }
 }

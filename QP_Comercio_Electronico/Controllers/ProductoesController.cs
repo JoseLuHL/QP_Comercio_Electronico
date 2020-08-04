@@ -26,6 +26,7 @@ namespace QP_Comercio_Electronico.Controllers
         {
             return await _context.Productos
                 .Include(s => s.ProdIdcategoriaNavigation)
+                .ThenInclude(s=>s.SubcatIdcategoriaNavigation)
                 .Include(s => s.ProdIdtiendaNavigation)
                 .ToListAsync();
         }
@@ -36,6 +37,7 @@ namespace QP_Comercio_Electronico.Controllers
         {
             var producto = await _context.Productos
                 .Include(s => s.ProdIdcategoriaNavigation)
+                .ThenInclude(s => s.SubcatIdcategoriaNavigation)
                 .Include(s => s.ProdIdtiendaNavigation)
                 .FirstOrDefaultAsync(s => s.ProdId == id);
             if (producto == null)
@@ -50,6 +52,7 @@ namespace QP_Comercio_Electronico.Controllers
         {
             var producto = await _context.Productos
                 .Include(s => s.ProdIdcategoriaNavigation)
+                .ThenInclude(s => s.SubcatIdcategoriaNavigation)
                 .Include(s => s.ProdIdtiendaNavigation)
                 .Where(s => s.ProdIdtiendaNavigation.TienId == id)
                 .ToListAsync();

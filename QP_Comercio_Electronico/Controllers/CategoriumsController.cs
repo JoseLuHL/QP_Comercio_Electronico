@@ -24,14 +24,19 @@ namespace QP_Comercio_Electronico.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categorium>>> GetCategoria()
         {
-            return await _context.Categoria.ToListAsync();
+            return await _context.Categoria
+                .Include(s=>s.Subcategoria)
+                .Include(s => s.Detalletiendacategoria).ToListAsync();
         }
 
         // GET: api/Categoriums/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Categorium>> GetCategorium(int id)
         {
-            var categorium = await _context.Categoria.FindAsync(id);
+            var categorium = await _context.Categoria
+                .Include(s => s.Subcategoria)
+                .Include(s => s.Detalletiendacategoria)
+                .FirstOrDefaultAsync(s=> s.CantId==id);
 
             if (categorium == null)
             {

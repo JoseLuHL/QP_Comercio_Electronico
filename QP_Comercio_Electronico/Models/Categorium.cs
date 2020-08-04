@@ -10,7 +10,7 @@ namespace QP_Comercio_Electronico.Models
         public Categorium()
         {
             Detalletiendacategoria = new HashSet<Detalletiendacategorium>();
-            Productos = new HashSet<Producto>();
+            Subcategoria = new HashSet<Subcategorium>();
         }
 
         public int CantId { get; set; }
@@ -19,6 +19,6 @@ namespace QP_Comercio_Electronico.Models
         public string CatFoto { get; set; }
 
         public virtual ICollection<Detalletiendacategorium> Detalletiendacategoria { get; set; }
-        public virtual ICollection<Producto> Productos { get; set; }
+        public virtual ICollection<Subcategorium> Subcategoria { get; set; }
     }
 }
