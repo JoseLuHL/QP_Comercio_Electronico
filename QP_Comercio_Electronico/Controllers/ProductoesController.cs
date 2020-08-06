@@ -28,6 +28,7 @@ namespace QP_Comercio_Electronico.Controllers
                 .Include(s => s.ProdIdcategoriaNavigation)
                 .ThenInclude(s=>s.SubcatIdcategoriaNavigation)
                 .Include(s => s.ProdIdtiendaNavigation)
+                .Where(s=>s.ProdIdtiendaNavigation.TienPremium==true)
                 .ToListAsync();
         }
 
