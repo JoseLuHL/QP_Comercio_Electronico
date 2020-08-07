@@ -25,7 +25,7 @@ namespace QP_Comercio_Electronico.Controllers
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
             var datos = await _context.Clientes
-                .Where(s=>s.Ordenes!=null).ToListAsync();
+                .Where(s => s.Ordenes != null).ToListAsync();
             return datos;
         }
 
@@ -39,8 +39,23 @@ namespace QP_Comercio_Electronico.Controllers
                 identificacion = string.Empty;
 
             var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(s => s.ClieId == id 
+                .FirstOrDefaultAsync(s => s.ClieId == id
                 || s.ClieIdentificacion == identificacion);
+
+            if (cliente == null)
+            {
+                return Ok(new { BadRequest().StatusCode, mensaje = "No hay resultados" });
+            }
+
+            return cliente;
+        }
+
+        [HttpGet("login/{identificacion}/{clave}")]
+        public async Task<ActionResult<Cliente>> GetClientedatos(string identificacion, string clave)
+        {
+
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(s => s.ClieIdentificacion == identificacion && s.ClieClave == clave);
 
             if (cliente == null)
             {

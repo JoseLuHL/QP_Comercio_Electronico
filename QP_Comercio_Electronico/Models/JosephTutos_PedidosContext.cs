@@ -14,8 +14,10 @@ namespace QP_Comercio_Electronico.Models
         {
         }
 
+        public virtual DbSet<Banco> Bancos { get; set; }
         public virtual DbSet<Categorium> Categoria { get; set; }
         public virtual DbSet<Cliente> Clientes { get; set; }
+        public virtual DbSet<Cuentascliente> Cuentasclientes { get; set; }
         public virtual DbSet<Detalletiendacategorium> Detalletiendacategoria { get; set; }
         public virtual DbSet<Estadoorden> Estadoordens { get; set; }
         public virtual DbSet<Mediopago> Mediopagos { get; set; }
@@ -24,9 +26,24 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Subcategorium> Subcategoria { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
+        public virtual DbSet<Tipocuentum> Tipocuenta { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Banco>(entity =>
+            {
+                entity.HasKey(x => x.BanId);
+
+                entity.ToTable("bancos");
+
+                entity.Property(e => e.BanId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ban_id");
+
+                entity.Property(e => e.BanDescripcion).HasColumnName("ban_descripcion");
+            });
+
             modelBuilder.Entity<Categorium>(entity =>
             {
                 entity.HasKey(x => x.CantId);
@@ -69,6 +86,10 @@ namespace QP_Comercio_Electronico.Models
                     .HasMaxLength(50)
                     .HasColumnName("clie_barrio");
 
+                entity.Property(e => e.ClieClave)
+                    .HasMaxLength(50)
+                    .HasColumnName("clie_clave");
+
                 entity.Property(e => e.ClieDireccion)
                     .HasMaxLength(50)
                     .HasColumnName("clie_direccion");
@@ -100,6 +121,38 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.ClieTelefono)
                     .HasMaxLength(50)
                     .HasColumnName("clie_telefono");
+            });
+
+            modelBuilder.Entity<Cuentascliente>(entity =>
+            {
+                entity.HasKey(x => x.MiscId);
+
+                entity.ToTable("cuentascliente");
+
+                entity.Property(e => e.MiscId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("misc_id");
+
+                entity.Property(e => e.MiscIdbanco).HasColumnName("misc_idbanco");
+
+                entity.Property(e => e.MiscIdcliente).HasColumnName("misc_idcliente");
+
+                entity.Property(e => e.MiscIdtipocuenta).HasColumnName("misc_idtipocuenta");
+
+                entity.HasOne(d => d.MiscIdbancoNavigation)
+                    .WithMany(p => p.Cuentasclientes)
+                    .HasForeignKey(x => x.MiscIdbanco)
+                    .HasConstraintName("FK_cuentascliente_bancos");
+
+                entity.HasOne(d => d.MiscIdclienteNavigation)
+                    .WithMany(p => p.Cuentasclientes)
+                    .HasForeignKey(x => x.MiscIdcliente)
+                    .HasConstraintName("FK_cuentascliente_cliente");
+
+                entity.HasOne(d => d.MiscIdtipocuentaNavigation)
+                    .WithMany(p => p.Cuentasclientes)
+                    .HasForeignKey(x => x.MiscIdtipocuenta)
+                    .HasConstraintName("FK_cuentascliente_tipocuenta");
             });
 
             modelBuilder.Entity<Detalletiendacategorium>(entity =>
@@ -149,6 +202,10 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.MepDescripcion)
                     .HasMaxLength(50)
                     .HasColumnName("mep_descripcion");
+
+                entity.Property(e => e.MepDetalle).HasColumnName("mep_detalle");
+
+                entity.Property(e => e.MepFoto).HasColumnName("mep_foto");
             });
 
             modelBuilder.Entity<Ordendetalle>(entity =>
@@ -211,6 +268,10 @@ namespace QP_Comercio_Electronico.Models
                 entity.ToTable("ordenes");
 
                 entity.Property(e => e.OrdId).HasColumnName("ord_id");
+
+                entity.Property(e => e.DetordPagacon)
+                    .HasMaxLength(50)
+                    .HasColumnName("detord_pagacon");
 
                 entity.Property(e => e.OrdAltura)
                     .HasMaxLength(50)
@@ -402,9 +463,17 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.Property(e => e.TienFoto).HasColumnName("tien_foto");
 
+                entity.Property(e => e.TienIdcliente)
+                    .HasMaxLength(50)
+                    .HasColumnName("tien_idcliente");
+
                 entity.Property(e => e.TienInstagram)
                     .HasMaxLength(100)
                     .HasColumnName("tien_instagram");
+
+                entity.Property(e => e.TienKey)
+                    .HasMaxLength(50)
+                    .HasColumnName("tien_key");
 
                 entity.Property(e => e.TienLatitud)
                     .HasMaxLength(50)
@@ -418,7 +487,15 @@ namespace QP_Comercio_Electronico.Models
                     .HasMaxLength(50)
                     .HasColumnName("tien_nit");
 
+                entity.Property(e => e.TienPkey)
+                    .HasMaxLength(50)
+                    .HasColumnName("tien_pkey");
+
                 entity.Property(e => e.TienPremium).HasColumnName("tien_premium");
+
+                entity.Property(e => e.TienPrivatekey)
+                    .HasMaxLength(50)
+                    .HasColumnName("tien_privatekey");
 
                 entity.Property(e => e.TienRazonsocial)
                     .HasMaxLength(200)
@@ -435,6 +512,19 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.TienYoutube)
                     .HasMaxLength(100)
                     .HasColumnName("tien_youtube");
+            });
+
+            modelBuilder.Entity<Tipocuentum>(entity =>
+            {
+                entity.HasKey(x => x.TipcuId);
+
+                entity.ToTable("tipocuenta");
+
+                entity.Property(e => e.TipcuId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("tipcu_id");
+
+                entity.Property(e => e.TipcuDescripcion).HasColumnName("tipcu_descripcion");
             });
 
             OnModelCreatingPartial(modelBuilder);
