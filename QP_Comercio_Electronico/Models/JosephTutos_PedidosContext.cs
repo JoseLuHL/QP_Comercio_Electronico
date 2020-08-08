@@ -8,7 +8,6 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class JosephTutos_PedidosContext : DbContext
     {
-
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
         {
@@ -27,7 +26,6 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Subcategorium> Subcategoria { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
         public virtual DbSet<Tipocuentum> Tipocuenta { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,9 +68,7 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.ToTable("cliente");
 
-                entity.Property(e => e.ClieId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("clie_id");
+                entity.Property(e => e.ClieId).HasColumnName("clie_id");
 
                 entity.Property(e => e.ClieAltura)
                     .HasMaxLength(50)
@@ -214,9 +210,7 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.ToTable("ordendetalle");
 
-                entity.Property(e => e.DetordId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("detord_id");
+                entity.Property(e => e.DetordId).HasColumnName("detord_id");
 
                 entity.Property(e => e.DetordCantidad)
                     .HasMaxLength(50)

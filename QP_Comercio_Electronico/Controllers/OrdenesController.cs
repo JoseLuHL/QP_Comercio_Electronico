@@ -117,24 +117,34 @@ namespace QP_Comercio_Electronico.Controllers
         [HttpPost]
         public async Task<ActionResult<Ordene>> PostOrdene(Ordene ordene)
         {
-            _context.Ordenes.Add(ordene);
+            string res;
             try
             {
-                await _context.SaveChangesAsync();
+                _context.Ordenes.Add(ordene);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    if (OrdeneExists(ordene.OrdId))
+                    {
+                        return Conflict();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                res = ordene.OrdId.ToString();
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
-                if (OrdeneExists(ordene.OrdId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                res = ex.Message;
             }
+            return Ok(res);
 
-            return CreatedAtAction("GetOrdene", new { id = ordene.OrdId }, ordene);
+            //return CreatedAtAction("GetOrdene", new { id = ordene.OrdId }, ordene);
         }
 
         // DELETE: api/Ordenes/5
