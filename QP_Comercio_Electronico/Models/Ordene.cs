@@ -26,7 +26,8 @@ namespace QP_Comercio_Electronico.Models
         public double? OrdTotalcompra { get; set; }
         public string OrdDescripcion { get; set; }
         public int? OrdIdformapago { get; set; }
-        public string DetordPagacon { get; set; }
+        public string OrdTelefono { get; set; }
+        public string OrdPagacon { get; set; }
 
         public virtual Cliente OrdIdclienteNavigation { get; set; }
         public virtual Estadoorden OrdIdestadoNavigation { get; set; }

@@ -8,6 +8,7 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class JosephTutos_PedidosContext : DbContext
     {
+
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
         {
@@ -26,6 +27,7 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Subcategorium> Subcategoria { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
         public virtual DbSet<Tipocuentum> Tipocuenta { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -263,10 +265,6 @@ namespace QP_Comercio_Electronico.Models
 
                 entity.Property(e => e.OrdId).HasColumnName("ord_id");
 
-                entity.Property(e => e.DetordPagacon)
-                    .HasMaxLength(50)
-                    .HasColumnName("detord_pagacon");
-
                 entity.Property(e => e.OrdAltura)
                     .HasMaxLength(50)
                     .HasColumnName("ord_altura");
@@ -306,6 +304,14 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.OrdNumero)
                     .HasMaxLength(50)
                     .HasColumnName("ord_numero");
+
+                entity.Property(e => e.OrdPagacon)
+                    .HasMaxLength(50)
+                    .HasColumnName("ord_pagacon");
+
+                entity.Property(e => e.OrdTelefono)
+                    .HasMaxLength(50)
+                    .HasColumnName("ord_telefono");
 
                 entity.Property(e => e.OrdTotalcompra).HasColumnName("ord_totalcompra");
 

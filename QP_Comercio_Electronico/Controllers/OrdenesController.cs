@@ -136,7 +136,7 @@ namespace QP_Comercio_Electronico.Controllers
                         throw;
                     }
                 }
-                res = ordene.OrdId.ToString();
+                res = "OK";
             }
             catch (Exception ex)
             {
