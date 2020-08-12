@@ -15,6 +15,11 @@ namespace QP_Comercio_Electronico.Models
         public int TipcuId { get; set; }
         public string TipcuDescripcion { get; set; }
 
-        public virtual ICollection<Cuentascliente> Cuentasclientes { get; set; }
+        private ICollection<Cuentascliente> cuentasclientes { get; set; }
+        public virtual ICollection<Cuentascliente> Cuentasclientes
+        {
+            get { return null; }
+            set { cuentasclientes = value; }
+        }
     }
 }

@@ -17,6 +17,11 @@ namespace QP_Comercio_Electronico.Models
         public string MepDetalle { get; set; }
         public string MepFoto { get; set; }
 
-        public virtual ICollection<Ordene> Ordenes { get; set; }
+        private ICollection<Ordene> ordenes { get; set; }
+        public virtual ICollection<Ordene> Ordenes
+        {
+            get { return null; }
+            set { ordenes = value; }
+        }
     }
 }

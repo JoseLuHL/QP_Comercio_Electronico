@@ -28,6 +28,7 @@ namespace QP_Comercio_Electronico.Controllers
                 .Include(s => s.Ordendetalles)
                 .ThenInclude(s=>s.DetordIdproductoNavigation)
                 .Include(s=>s.OrdIdformapagoNavigation)
+                .Include(s=>s.OrdIdtiendaNavigation)
                 .Include(s=>s.OrdIdestadoNavigation)
                 .Include(s => s.OrdIdclienteNavigation)
                 .Where(s=>s.Ordendetalles!=null)
@@ -46,9 +47,10 @@ namespace QP_Comercio_Electronico.Controllers
                 .Include(s => s.Ordendetalles)
                 .ThenInclude(s => s.DetordIdproductoNavigation)
                 .Include(s=> s.OrdIdclienteNavigation)
+                .Include(s => s.OrdIdtiendaNavigation)
                 .Include(s => s.OrdIdformapagoNavigation)
                 .Include(s => s.OrdIdestadoNavigation)
-                .FirstOrDefaultAsync(s => s.Ordendetalles != null);
+                .FirstOrDefaultAsync(s => s.Ordendetalles  != null && s.OrdIdestado != 3);
 
             if (ordene == null)
             {
@@ -65,9 +67,33 @@ namespace QP_Comercio_Electronico.Controllers
                 .Include(s => s.Ordendetalles)
                 .ThenInclude(s => s.DetordIdproductoNavigation)
                 .Include(s => s.OrdIdclienteNavigation)
+                .Include(s => s.OrdIdtiendaNavigation)
                 .Include(s => s.OrdIdformapagoNavigation)
                 .Include(s => s.OrdIdestadoNavigation)
-                .Where(s => s.Ordendetalles != null && s.OrdIdcliente==idtienda)
+                .Where(s => s.Ordendetalles != null && s.OrdIdestado!=3 && s.OrdIdcliente==idtienda)
+                .OrderByDescending(s=>s.OrdId)
+                .ToListAsync();
+
+            if (ordene == null)
+            {
+                return NotFound();
+            }
+
+            return ordene;
+        }
+
+        [HttpGet("cliente/{idcliente}")]
+        public async Task<ActionResult<IEnumerable<Ordene>>> GetOrdenCliente(int? idcliente)
+        {
+            //var ordene = await _context.Ordenes.FindAsync(id);
+            var ordene = await _context.Ordenes
+                .Include(s => s.Ordendetalles)
+                .ThenInclude(s => s.DetordIdproductoNavigation)
+                .Include(s => s.OrdIdclienteNavigation)
+                .Include(s => s.OrdIdtiendaNavigation)
+                .Include(s => s.OrdIdformapagoNavigation)
+                .Include(s => s.OrdIdestadoNavigation)
+                .Where(s => s.Ordendetalles != null && s.OrdIdestado != 3 && s.OrdIdcliente== idcliente)
                 .OrderByDescending(s=>s.OrdId)
                 .ToListAsync();
 
@@ -82,7 +108,7 @@ namespace QP_Comercio_Electronico.Controllers
         // PUT: api/Ordenes/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        [HttpPost("actualizar/{id}")]
         public async Task<IActionResult> PutOrdene(int id, Ordene ordene)
         {
             if (id != ordene.OrdId)
@@ -148,7 +174,7 @@ namespace QP_Comercio_Electronico.Controllers
         }
 
         // DELETE: api/Ordenes/5
-        [HttpDelete("{id}")]
+        [HttpPost("eliminar/{id}")]
         public async Task<ActionResult<Ordene>> DeleteOrdene(int id)
         {
             var ordene = await _context.Ordenes.FindAsync(id);

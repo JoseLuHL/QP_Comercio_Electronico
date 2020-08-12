@@ -37,7 +37,19 @@ namespace QP_Comercio_Electronico.Models
         public string TienIdcliente { get; set; }
 
         public virtual ICollection<Detalletiendacategorium> Detalletiendacategoria { get; set; }
-        public virtual ICollection<Ordene> Ordenes { get; set; }
-        public virtual ICollection<Producto> Productos { get; set; }
+        private ICollection<Ordene> ordenes { get; set; }
+        public virtual ICollection<Ordene> Ordenes
+        {
+            get { return null; }
+            set { ordenes = value; }
+        }
+
+        private ICollection<Producto> productos { get; set; }
+        public virtual ICollection<Producto> Productos
+        {
+            get { return null; }
+            set { productos = value; }
+        }
+
     }
 }
