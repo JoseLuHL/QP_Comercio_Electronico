@@ -34,5 +34,11 @@ namespace QP_Comercio_Electronico.Models
         public virtual Mediopago OrdIdformapagoNavigation { get; set; }
         public virtual Tiendum OrdIdtiendaNavigation { get; set; }
         public virtual ICollection<Ordendetalle> Ordendetalles { get; set; }
+        //private ICollection<Ordendetalle> ordendetalles { get; set; }
+        //public virtual ICollection<Ordendetalle> Ordendetalles
+        //{
+        //    get { return null; }
+        //    set { ordendetalles = value; }
+        //}
     }
 }

@@ -28,6 +28,8 @@ namespace QP_Comercio_Electronico.Models
         public string TienAltura { get; set; }
         public string TienFacebook { get; set; }
         public string TienInstagram { get; set; }
+        public string TienWhatsapp { get; set; }
+        public string TienTwitter { get; set; }
         public string TienYoutube { get; set; }
         public string TienFoto { get; set; }
         public bool? TienPremium { get; set; }
@@ -43,13 +45,6 @@ namespace QP_Comercio_Electronico.Models
             get { return null; }
             set { ordenes = value; }
         }
-
-        private ICollection<Producto> productos { get; set; }
-        public virtual ICollection<Producto> Productos
-        {
-            get { return null; }
-            set { productos = value; }
-        }
-
+        public virtual ICollection<Producto> Productos { get; set; }
     }
 }

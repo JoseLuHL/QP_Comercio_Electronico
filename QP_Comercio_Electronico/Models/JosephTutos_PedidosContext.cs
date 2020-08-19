@@ -8,11 +8,11 @@ namespace QP_Comercio_Electronico.Models
 {
     public partial class JosephTutos_PedidosContext : DbContext
     {
-
         public JosephTutos_PedidosContext(DbContextOptions<JosephTutos_PedidosContext> options)
             : base(options)
         {
         }
+
 
         public virtual DbSet<Banco> Bancos { get; set; }
         public virtual DbSet<Categorium> Categoria { get; set; }
@@ -27,7 +27,6 @@ namespace QP_Comercio_Electronico.Models
         public virtual DbSet<Subcategorium> Subcategoria { get; set; }
         public virtual DbSet<Tiendum> Tienda { get; set; }
         public virtual DbSet<Tipocuentum> Tipocuenta { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -508,6 +507,14 @@ namespace QP_Comercio_Electronico.Models
                 entity.Property(e => e.TienTipoidentificacion)
                     .HasMaxLength(50)
                     .HasColumnName("tien_tipoidentificacion");
+
+                entity.Property(e => e.TienTwitter)
+                    .HasMaxLength(100)
+                    .HasColumnName("tien_twitter");
+
+                entity.Property(e => e.TienWhatsapp)
+                    .HasMaxLength(100)
+                    .HasColumnName("tien_whatsapp");
 
                 entity.Property(e => e.TienYoutube)
                     .HasMaxLength(100)

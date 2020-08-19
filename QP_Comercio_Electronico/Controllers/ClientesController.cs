@@ -119,8 +119,8 @@ namespace QP_Comercio_Electronico.Controllers
                     throw;
                 }
             }
-
-            return CreatedAtAction("GetCliente", new { id = cliente.ClieId }, cliente);
+            return Ok(new{ id = cliente.ClieId });
+            //return Ok(true);
         }
 
         // DELETE: api/Clientes/5

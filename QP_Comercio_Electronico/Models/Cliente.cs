@@ -28,7 +28,6 @@ namespace QP_Comercio_Electronico.Models
         public string ClieClave { get; set; }
 
         public virtual ICollection<Cuentascliente> Cuentasclientes { get; set; }
-        //public virtual ICollection<Ordene> Ordenes { get; set; }
         private ICollection<Ordene> ordenes { get; set; }
         public virtual ICollection<Ordene> Ordenes
         {
