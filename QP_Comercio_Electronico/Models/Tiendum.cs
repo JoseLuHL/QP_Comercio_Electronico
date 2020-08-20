@@ -45,6 +45,12 @@ namespace QP_Comercio_Electronico.Models
             get { return null; }
             set { ordenes = value; }
         }
-        public virtual ICollection<Producto> Productos { get; set; }
+        //public virtual ICollection<Producto> Productos { get; set; }
+        private ICollection<Producto> productos { get; set; }
+        public virtual ICollection<Producto> Productos
+        {
+            get { return null; }
+            set { productos = value; }
+        }
     }
 }

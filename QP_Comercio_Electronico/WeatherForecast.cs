@@ -27,3 +27,10 @@ namespace QP_Comercio_Electronico
 //    get { return null; }
 //    set { ordendetalles = value; }
 //}
+
+//private ICollection<Producto> productos { get; set; }
+//public virtual ICollection<Producto> Productos
+//{
+//    get { return null; }
+//    set { productos = value; }
+//}
